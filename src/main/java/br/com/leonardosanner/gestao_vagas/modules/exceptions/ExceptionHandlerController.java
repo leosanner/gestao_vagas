@@ -7,11 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@ControllerAdvice
+@ControllerAdvice // Mostra que a classe vai tratar de exceções
 public class ExceptionHandlerController {
     
     private MessageSource messageSource;
@@ -20,14 +19,14 @@ public class ExceptionHandlerController {
         this.messageSource = messageSource;
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class) // Lida com a exceção passada como classe
     public ResponseEntity<List<ErrorMessageDTO>> handleMethodNotValidException(MethodArgumentNotValidException e){
         List<ErrorMessageDTO> dto = new ArrayList<>();
 
         e.getBindingResult().getFieldErrors().forEach(err->{
             String message = messageSource.getMessage(err, LocaleContextHolder.getLocale());
             ErrorMessageDTO error =  new ErrorMessageDTO(message, err.getField());
-            dto.add(error);
+            dto.add(error); // ResponseEntity retorna Classe como json
         });
 
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);

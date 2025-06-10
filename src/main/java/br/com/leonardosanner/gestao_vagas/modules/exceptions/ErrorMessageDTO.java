@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+@AllArgsConstructor // Construtor que preenche todos atributos
 public class ErrorMessageDTO { // DTO = data transfer objects
 
     private String message; // mensagem de erro, message da annotation de verificação
