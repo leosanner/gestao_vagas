@@ -1,4 +1,4 @@
-package br.com.leonardosanner.gestao_vagas.modules.exceptions;
+package br.com.leonardosanner.gestao_vagas.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID>{
     // funciona como um intermediário entre banco de dados e api, facilitando a usabilidade
     Optional<CandidateEntity> findByUsernameOrEmail(String username, String email);
+    Optional<CandidateEntity> findByUsername(String username);
 }

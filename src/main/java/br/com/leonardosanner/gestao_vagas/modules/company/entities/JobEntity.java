@@ -3,6 +3,9 @@ package br.com.leonardosanner.gestao_vagas.modules.company.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -17,6 +20,9 @@ import lombok.Data;
 
 @Data
 @Entity(name = "job")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class JobEntity {
     
     @Id

@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import br.com.leonardosanner.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.com.leonardosanner.gestao_vagas.modules.company.repositories.CompanyRepository;
-import br.com.leonardosanner.gestao_vagas.modules.exceptions.CompanyFoundException;
+import br.com.leonardosanner.gestao_vagas.exceptions.CompanyFoundException;
 
 @Service
 public class CreateCompanyUseCase {
