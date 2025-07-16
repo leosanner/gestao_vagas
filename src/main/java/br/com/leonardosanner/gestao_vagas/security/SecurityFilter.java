@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,21 +27,29 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-            SecurityContextHolder.getContext().setAuthentication(null);
+//            SecurityContextHolder.getContext().setAuthentication(null);
             String header = request.getHeader("Authorization");
 
-            if (header != null) {
-                var subjectToken = jwtProvider.validadeToken(header);
+            if (request.getRequestURI().startsWith("/company")){
 
-                if (subjectToken.isEmpty()) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
+                if (header != null) {
+                    var token = jwtProvider.validadeToken(header);
+
+                    if (token == null) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
+                    }
+
+                    var roles = token.getClaim("roles").asList(Object.class);
+
+                    var grants = roles.stream().map(role ->
+                            new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase())).toList();
+
+                    request.setAttribute("company_id", token.getSubject());
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(token.getSubject(), grants);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-
-                request.setAttribute("company_id", subjectToken);
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(subjectToken, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
             filterChain.doFilter(request, response);
